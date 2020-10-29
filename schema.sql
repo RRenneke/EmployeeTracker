@@ -12,7 +12,7 @@ CREATE TABLE department (
 
 CREATE TABLE role (
   id INT NOT NULL AUTO_INCREMENT,
-  title VARCHAR(30) NOT NULL,
+  title VARCHAR(50) NOT NULL,
   salary DECIMAL(15,0),
   department_id INT(3) NOT NULL,
   PRIMARY KEY (id)
@@ -35,7 +35,7 @@ INSERT INTO role (title, salary, department_id)
 VALUES
 ("Manager", 80000, 1),
 ("Co-Manager", 80000, 1),
-("Assitant Regional Manager", 60000, 2),
+("Assitant to the Regional Manager", 60000, 2),
 ("Salesman", 60000, 2),
 ("Head Accountant", 60000, 3),
 ("Accountant", 50000, 3),
@@ -50,6 +50,6 @@ VALUES
 ("Phyllis", "Smith",4, 1),
 ("Ryan", "Howard",4, 1),
 ("Angela", "Martin",5, 1),
-("Kevin","Malone",6, 5),
-("Oscar","Nunez",6, 5),
+("Kevin","Malone",6, 7),
+("Oscar","Nunez",6, 7),
 ("Pam", "Halpert",7, NULL);
