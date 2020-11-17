@@ -272,3 +272,58 @@ function addNewDepartment() {
             })
     })
 }
+//tried to use update project from class activity 9 but could not get it to work
+function updateEmployeeRole() 
+{
+    connection.query("SELECT employee.last_name FROM employee", function(err, res) 
+        {
+        if (err) throw err;
+        inquirer
+            .prompt
+            ([{
+                //get from the user the employee that needs to be updated based on the current list of employees
+                    name: "eName",
+                    type: "rawlist",
+                    message: "Which employee needs to be updated?",
+                    choices: function () 
+                    {
+                        var empArr = [];
+                        for (var i = 0; i < res.length; i++) 
+                        {
+                            empArr.push(res[i].last_name);
+                        }
+                        return emptArr;
+                    }
+            }]) 
+        },
+        ),
+
+    connection.query("SELECT role.title FROM role", function(err, res) 
+        {
+            if (err) throw err;
+            inquirer
+                .prompt
+                ([{
+                //get from the user the new title from the current list of titles
+                    name: "eRole",
+                    type: "rawlist",
+                    message: "What is the employees new title?",
+                    choices: function () 
+                    {
+                        var titleArray = [];
+                        for (var i = 0; i < res.length; i++) 
+                        {
+                            titleArray.push(res[i].title);
+                        }
+                        return titleArray;
+                    }
+                }]) 
+        },
+        ),
+
+        //.then(answers => {
+            findRole(answer.employee.employee_last);
+
+      //  })
+
+}
