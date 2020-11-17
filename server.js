@@ -65,3 +65,26 @@ function startSearch() {
             }
         })
 }
+function viewAllEmployees() {
+    const query =
+ //"SELECT * FROM employee"
+        //tutor helped me get fancy to combine the tables but we ran out to time.
+        //this was as far as I got
+        `SELECT e.id, e.first_name, e.last_name, r.title, r.salary, d.name AS dept_name, 
+        CONCAT(emp.first_name, ' ', emp.last_name) AS manager
+        FROM employee e
+        LEFT JOIN role r
+	    ON e.role_id = r.id
+        LEFT JOIN department d
+        ON d.id = r.department_id
+        LEFT JOIN employee emp
+        ON emp.id = e.manager_id`
+    //connect to the database and do a console table if there is not an error
+    connection.query(query, function (err, res) {
+        if (err) throw err;
+        //per TA, use console.table to log the results so we don't have to use positioning like in class example
+        console.table(res);
+        //run the original function to go back to promot list
+        startSearch();
+    });
+}
