@@ -111,3 +111,75 @@ function viewAllDepartments() {
         startSearch();
     });
 }
+
+function addNewEmployee() {
+    //connect to the database. Then select all from the roles tables
+    connection.query(`SELECT * FROM role`, function (err, res) {
+        if (err) throw err;
+        console.log(res)
+        //promot inquirer
+        inquirer
+            .prompt([
+                {
+                    //name of column
+                    name: "first_name",
+                    //input since we are asking the user for it
+                    type: "input",
+                    //the message we want the user to see
+                    message: "What is the employee's first name?"
+                },
+                {
+                    //second data point
+                    name: "last_name",
+                    type: "input",
+                    message: "What is the employee's last name?"
+                },
+                {
+                    //last datapoint
+                    name: "title",
+                    //rawlist and function so the user chooses from the current list of job titles
+                    type: "rawlist",
+                    message: "What is the employee's title?",
+                    //choices function in class activty 10
+                    //push the response title to the array
+                    choices: function () {
+                        var titleArray = [];
+                        for (var i = 0; i < res.length; i++) {
+                            titleArray.push(res[i].title);
+                        }
+                        return titleArray;
+                    }
+                }
+            ])
+            // when finished prompting, get the answer/response for title
+            .then(function (answer) {
+                var title = answer.title;
+                for (var i = 0; i < res.length; i++) {
+                    //https://www.w3schools.com/js/js_switch.asp
+                    switch (title) {
+                        case res[i].title:
+                            title = i + 1;
+                            break;
+                    }
+                }
+                //use the questionmark for a place holder
+                const query = `INSERT INTO employee SET ?`;
+                //we will replace the question mark with this object (contains keys and values) the user provided
+                connection.query(query,
+                    //query for the three responses
+                    {
+                        first_name: answer.first_name,
+                        last_name: answer.last_name,
+                        role_id: title
+                    },
+                    //print them to the table
+                    function (err, res) {
+                        if (err) throw err;
+                        console.table(res);
+                        startSearch();
+                    }
+                )
+            })
+    })
+}
+
