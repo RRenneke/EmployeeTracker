@@ -88,3 +88,26 @@ function viewAllEmployees() {
         startSearch();
     });
 }
+function viewAllRoles() {
+    const query =
+        //select all from the roles table. Nothing fancy. 
+        "SELECT * FROM role"
+    //connect to the database and do a console table if there is not an error
+    connection.query(query, function (err, res) {
+        if (err) throw err;
+        console.table(res);
+        //run the original function to go back to promot list
+        startSearch();
+    });
+}
+
+function viewAllDepartments() {
+    //inquierer is not needed since we are not asking it to do anything like with promots and updates
+    const query =
+        "SELECT * FROM department"
+    connection.query(query, function (err, res) {
+        if (err) throw err;
+        console.table(res);
+        startSearch();
+    });
+}
