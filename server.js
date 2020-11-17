@@ -182,4 +182,93 @@ function addNewEmployee() {
             })
     })
 }
+function addNewRole() {
+    connection.query(`SELECT * FROM department`, function (err, res) {
+        if (err) throw err;
+        console.log(res)
+        inquirer
+            .prompt([
+                {
+                    name: "roleName",
+                    type: "input",
+                    message: "What is the name of the new role?"
+                },
+                {
+                    name: "roleSalary",
+                    type: "input",
+                    message: "What is the salary of the new role?"
+                },
+                {
+                    name: "department",
+                    type: "rawlist",
+                    message: "What department is the role in?",
+                    choices: function () {
+                        var deptArr = [];
+                        for (var i = 0; i < res.length; i++) {
+                            deptArr.push(res[i].name);
+                        }
+                        return deptArr;
+                    }
+                }
+            ]).then(function (answer) {
+                var userDPT = answer.department;
+                for (let i = 0; i < res.length; i++) {
+                    switch (userDPT) {
+                        case res[i].name:
+                            console.log(res[i].name)
+                            userDPT = i + 1;
+                            break;
+                    }
+                }
 
+                let query = `INSERT INTO role SET ?`;
+                connection.query(query,
+                    {
+                        title: answer.roleName,
+                        salary: answer.roleSalary,
+                        department_id: userDPT
+                    },
+                    function (err, res) {
+                        if (err) throw err;
+                        console.table(res);
+                        startSearch();
+                    }
+                )
+            })
+    })
+}
+
+function addNewDepartment() {
+    const query = "SELECT id, name FROM department";
+    connection.query(query, function (err, res) {
+        console.log(res)
+    })
+
+    connection.query(`SELECT * FROM department`, function (err, res) {
+        if (err) throw err;
+        console.log(res)
+        inquirer
+            .prompt([
+                {
+                    name: "name",
+                    type: "input",
+                    message: "What is the name of the new department?"
+                }
+            ])
+            .then(function (answer) {
+                console.log(answer.title)
+
+                const query = `INSERT INTO department SET ?`;
+                connection.query(query,
+                    {
+                        name: answer.name
+                    },
+                    function (err, res) {
+                        if (err) throw err;
+                        console.table(res);
+                        startSearch();
+                    }
+                )
+            })
+    })
+}
